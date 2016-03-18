@@ -3,13 +3,14 @@ package library.book.implementation;
 import java.util.*;
 import java.io.*;
 
+
 /**
  *
  * @author Denny
  */
 public class LibraryReaderWriter {
     
-    final static class book{
+    public final static class book{
             String name;
             int quantity;
     }
@@ -17,13 +18,10 @@ public class LibraryReaderWriter {
     //Function to read from .txt file
     public static Map<String, List<book>> Reader()throws FileNotFoundException{
         
-        //Reading from the .txt file
         Scanner scanner = new Scanner(new File("library.txt"));
         
-        //Creating the map interface
         Map<String, List<book>> map = new HashMap<String, List<book>>();
         
-        //Creating a list for each genre
         List<book> Art = new ArrayList<book>();
         List<book> Business = new ArrayList<book>();
         List<book> Comp = new ArrayList<book>();
@@ -35,8 +33,6 @@ public class LibraryReaderWriter {
         List<book> Philosophy = new ArrayList<book>();
         
         
-        //Reading through the .txt file, waiting to read a ";" to move onto the next object, which should be
-        //Genre;Name;Quantity
         while(scanner.hasNextLine())
         {
           String data = scanner.nextLine();
@@ -45,7 +41,7 @@ public class LibraryReaderWriter {
           temp.name = library[1];
           temp.quantity = Integer.parseInt(library[2]);
           switch (library[0]){
-              case "Art":
+              case "Art" :
                   Art.add(temp);
                   break;
               case "Business & Economics":
@@ -75,24 +71,33 @@ public class LibraryReaderWriter {
           }
         }
         
-        map.put("Art", Art);
-        map.put("Business & Economics", Business);
-        map.put("Computer Science", Comp);     
-        map.put("Design", Design);
-        map.put("Education", Education);
-        map.put("Law", Law);
-        map.put("Mathmatics", Math);
-        map.put("Music", Music);
-        map.put("Philosophy and Psychology", Philosophy);
+        map.put(Categories.ART.name, Art);
+        map.put(Categories.BUS.name, Business);
+        map.put(Categories.COMP.name, Comp);     
+        map.put(Categories.DESIGN.name, Design);
+        map.put(Categories.EDU.name, Education);
+        map.put(Categories.LAW.name, Law);
+        map.put(Categories.MATH.name, Math);
+        map.put(Categories.MUSIC.name, Music);
+        map.put(Categories.PHIL.name, Philosophy);
         
-    return map;
+        scanner.close();
+                                return map;
     }
     
-    public static void Writer(Map<String, List<book>> library){
+    public static void Writer(Map<String, List<book>> library)throws FileNotFoundException{
         
-        Map<String, List<book>> map = new HashMap<String, List<book>>();
-        for (Map.Entry<String, List<book>> entry : map.entrySet()) {
-           System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+        PrintWriter writing = new PrintWriter(new File("library.txt"));
+        
+        
+        for (Map.Entry<String, List<book>> entry : library.entrySet()) {
+            for(int i = 0; i < entry.getValue().size(); i++)
+           {
+               book temp = entry.getValue().get(i);
+               writing.println(String.format("%s;%s;%d", entry.getKey(), temp.name, temp.quantity));
+           }
+           
         }
+        writing.close();
     }
 }
