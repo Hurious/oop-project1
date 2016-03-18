@@ -1,0 +1,35 @@
+package library.book.implementation;
+
+import java.util.*;
+import java.io.*;
+
+/**
+ *
+ * @author Denny
+ */
+public class LibraryBookImplementation{
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args){
+        
+        try{
+            LibraryData something = new LibraryData();
+            something.printLibrary();
+            LibraryReaderWriter.book temp = something.getElements(Categories.ART.name, 0);
+            temp.quantity--;
+            something.updateElement(temp);
+            something.saveChanges();
+            
+        }
+        catch (FileNotFoundException ex){ 
+            System.err.println("ERROR");
+        }
+        
+        
+      
+        
+    }
+    
+}
