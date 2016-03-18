@@ -1,0 +1,98 @@
+package library.book.implementation;
+
+import java.util.*;
+import java.io.*;
+
+/**
+ *
+ * @author Denny
+ */
+public class LibraryReaderWriter {
+    
+    final static class book{
+            String name;
+            int quantity;
+    }
+    
+    //Function to read from .txt file
+    public static Map<String, List<book>> Reader()throws FileNotFoundException{
+        
+        //Reading from the .txt file
+        Scanner scanner = new Scanner(new File("library.txt"));
+        
+        //Creating the map interface
+        Map<String, List<book>> map = new HashMap<String, List<book>>();
+        
+        //Creating a list for each genre
+        List<book> Art = new ArrayList<book>();
+        List<book> Business = new ArrayList<book>();
+        List<book> Comp = new ArrayList<book>();
+        List<book> Design = new ArrayList<book>();
+        List<book> Education = new ArrayList<book>();
+        List<book> Law = new ArrayList<book>();
+        List<book> Math = new ArrayList<book>();
+        List<book> Music = new ArrayList<book>();
+        List<book> Philosophy = new ArrayList<book>();
+        
+        
+        //Reading through the .txt file, waiting to read a ";" to move onto the next object, which should be
+        //Genre;Name;Quantity
+        while(scanner.hasNextLine())
+        {
+          String data = scanner.nextLine();
+          String[] library = data.split(";");
+          book temp = new book();
+          temp.name = library[1];
+          temp.quantity = Integer.parseInt(library[2]);
+          switch (library[0]){
+              case "Art":
+                  Art.add(temp);
+                  break;
+              case "Business & Economics":
+                  Business.add(temp);
+                  break;
+              case "Computer Science":
+                  Comp.add(temp);
+                  break;
+              case "Design":
+                  Design.add(temp);
+                  break;
+              case "Education":
+                  Education.add(temp);
+                  break;
+              case "Law":
+                  Law.add(temp);
+                  break;
+              case "Mathmatics":
+                  Math.add(temp);
+                  break;
+              case "Music":
+                  Music.add(temp);
+                  break;
+              case "Philosophy and Psychology":
+                  Philosophy.add(temp);
+                  break;
+          }
+        }
+        
+        map.put("Art", Art);
+        map.put("Business & Economics", Business);
+        map.put("Computer Science", Comp);     
+        map.put("Design", Design);
+        map.put("Education", Education);
+        map.put("Law", Law);
+        map.put("Mathmatics", Math);
+        map.put("Music", Music);
+        map.put("Philosophy and Psychology", Philosophy);
+        
+    return map;
+    }
+    
+    public static void Writer(Map<String, List<book>> library){
+        
+        Map<String, List<book>> map = new HashMap<String, List<book>>();
+        for (Map.Entry<String, List<book>> entry : map.entrySet()) {
+           System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
+        }
+    }
+}
