@@ -1,0 +1,80 @@
+package library.book.implementation;
+import java.util.*;
+import java.io.*;
+
+/**
+ *
+ * @author Denny
+ */
+public class LibraryData {
+    
+    private Map<String, List<LibraryReaderWriter.book>> library; 
+    
+    public LibraryData()throws FileNotFoundException{
+        library = LibraryReaderWriter.Reader();
+    }
+    
+    public void saveChanges(){
+        try{
+            LibraryReaderWriter.Writer(library);
+        }
+        catch(FileNotFoundException ex){
+            
+        }
+    }
+    
+    public void printLibrary()
+    {
+          for (Map.Entry<String, List<LibraryReaderWriter.book>> entry : library.entrySet()) {
+            for(int i = 0; i < entry.getValue().size(); i++)
+           {
+               LibraryReaderWriter.book temp = entry.getValue().get(i);
+               System.out.println(String.format("%s;%s;%d", entry.getKey(), temp.name, temp.quantity));
+           }
+                                             }
+    
+    }
+    
+    public LibraryReaderWriter.book getElements(String category, int index)
+    {
+        return library.get(category).get(index);
+    }
+    
+    public LibraryReaderWriter.book getElements(String category, String bookTitle)
+    {
+        List<LibraryReaderWriter.book> templist = library.get(category);
+        for(int i = 0; i < templist.size(); i++)
+        {
+            if(templist.get(i).name == bookTitle)
+            {
+                return templist.get(i);
+            }
+        }
+        return null; 
+    }
+    
+    public void updateElement(LibraryReaderWriter.book book)
+    {
+        for(Categories c : Categories.values())
+        {
+            if(getElements(c.name, book.name) != null)
+            {
+                int index = findIndex(c.name, book);
+                library.get(c.name).set(index, book);
+            }
+        }
+    }
+    
+    private int findIndex(String category, LibraryReaderWriter.book book)
+    {
+       List<LibraryReaderWriter.book> section = library.get(category);
+        for(int i = 0; i < section.size(); i++)
+        {
+            if(section.get(i).name == book.name)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+}
